@@ -3,12 +3,11 @@
  */
 package com.machint.service.sendemail.config;
 
-import java.io.File;
-import java.io.FileInputStream;
+import java.io.InputStream;
 import java.io.IOException;
 import java.util.Properties;
 
-import org.apache.commons.io.FileUtils;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 
@@ -21,19 +20,16 @@ public class SendEmailConfig
     public JavaMailSender getJavaMailSender(String host, String port, String username, String password, String protocol) throws IOException
     {
     	String filename=null;
-		File file=null;
-		FileInputStream fis = null;
+		InputStream is = null;
 	    Properties prop = null;
 	    JavaMailSenderImpl mailSender = null;
 		
 		filename="port"+port+".properties";
 		
-		file=new File(getClass().getClassLoader().getResource(filename).getFile());
-		
-		fis=FileUtils.openInputStream(file);
+		is=new ClassPathResource(filename).getInputStream();
 		
 		prop=new Properties();
-		prop.load(fis);
+		prop.load(is);
 		
 		//Email Configs
 		mailSender = new JavaMailSenderImpl();
